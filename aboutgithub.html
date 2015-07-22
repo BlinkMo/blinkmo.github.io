@@ -1,0 +1,306 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="Keywords" content="blog"/>
+    <meta name="Description" content="blog"/>
+    <title>Simple</title>
+    <link rel="shortcut icon" href="/static/favicon.png"/>
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+</head>
+<body>
+<div class="main">
+    <div class="header">
+    	<ul id="pages">
+            <li><a href="/">home</a></li>
+            <li><a href="/#/tags">tags</a></li>
+            <li><a href="/#/archive">archive</a></li>
+    	</ul>
+    </div>
+	<div class="wrap-header">
+	<h1>
+    <a href="/" id="title"></a>
+	</h1>
+	</div>
+<div id="md" style="display: none;">
+<!-- markdown -->
+#关于GitHub和GitHub Pages
+<br>
+
+这篇主要解决两个问题:
+
+- GitHub怎么上传代码
+- GitHub怎么搭建技术博客
+
+
+##`关于1  GitHub怎么上传代码`
+
+前期你要做以下几件事。
+
+1.注册GitHub帐号
+
+2.新建一个仓库<br>
+new一个repository
+
+3.设置你的SSH Key
+
+首先怎么拿到你的Key，在command中输入
+~~~~
+ssh-keygen -t rsa -C "your_email@youremail.com"
+~~~~
+
+邮件名称不需要引号，举例：
+![](http://dl27.yunpan.360.cn/intf.php?method=Preview.outputPic&qid=162093577&fname=%2F%E5%9B%BE%E5%BA%8A%E4%B8%93%E7%94%A8%2FC0A2C04E-1510-4E64-9BD0-EB5A730B75AB.png&fhash=075250289e269a1f75ce652f809345444afc2746&dt=27.42232b27d8a1d91fc6165a7ccfdcd297&v=1.0.1&rtick=14375467234542&open_app_id=0&devtype=web&sign=006305665f7e3cd09b08aea6d731b9f1&)
+
+然后打开Key这个文件，
+这个时候之前学的一些linux下的命令就用到了
+![](http://dl27.yunpan.360.cn/intf.php?method=Preview.outputPic&qid=162093577&fname=%2F%E5%9B%BE%E5%BA%8A%E4%B8%93%E7%94%A8%2FA6400586-5784-41F6-A707-D8496B8B59E9.jpeg&fhash=e525772d704a3a551bc9dc8bec82181187309044&dt=27.8a3a57abcb143892738bb9eb4d97c4fa&v=1.0.1&rtick=14375460368577&open_app_id=0&devtype=web&sign=2b9de7271e6e73d522a4ccf9f1cc9aeb&)
+
+或者直接用以下命令复制到剪贴板
+~~~~
+pbcopy < ~/.ssh/id_rsa.pub
+~~~~
+
+最后在GitHub上设置一下
+
+![](http://dl27.yunpan.360.cn/intf.php?method=Preview.outputPic&qid=162093577&fname=%2F%E5%9B%BE%E5%BA%8A%E4%B8%93%E7%94%A8%2F%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7+2015-07-20+%E4%B8%8B%E5%8D%883.09.53.png&fhash=d60b1a29e94154dc27094788a017b9982deb13a9&dt=27.814351d25ee284df0334cf5006d996bd&v=1.0.1&rtick=14375460361942&open_app_id=0&devtype=web&sign=c82e55dffa10ff40e3225319cb375985&)
+
+4.连接GitHub与你的仓库
+
+用以下命令尝试连接一下
+
+~~~~
+ssh -T git@github.com
+~~~~
+
+输入yes继续即可。
+
+![](http://dl27.yunpan.360.cn/intf.php?method=Preview.outputPic&qid=162093577&fname=%2F%E5%9B%BE%E5%BA%8A%E4%B8%93%E7%94%A8%2F%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7+2015-07-20+%E4%B8%8B%E5%8D%883.30.22.png&fhash=922e9b380e4e71b4dbffb47e1eeede0dd3096bb3&dt=27.087b5aa4f3f9a3435e04c3bd14b6d76f&v=1.0.1&rtick=14375460363050&open_app_id=0&devtype=web&sign=4d5407420b2d6ff4bfb74ce67fd6978d&)
+
+
+连接的时候我遇到了这样的问题 报错如下
+~~~~
+ssh: connect to host github.com port 22: Operation timed out
+~~~~
+
+github可能把22端口给封了。
+
+我在[stackflow](http://stackoverflow.com/questions/7144811/git-ssh-error-connect-to-host-bad-file-number)上找到了答案：
+
+![Alt text](http://dl27.yunpan.360.cn/intf.php?method=Preview.outputPic&qid=162093577&fname=%2F%E5%9B%BE%E5%BA%8A%E4%B8%93%E7%94%A8%2F84572E17-1509-4140-A677-1A7AA4EBA7FA.png&fhash=19ce7f00ff828d97a48dd0384e99034abda499b5&dt=27.299def462bfb12d0655542e24928788c&v=1.0.1&rtick=14374767578355&open_app_id=0&devtype=web&sign=4c573033849a1e50cc5e76729a784a47&)
+
+把.ssh/config改成以下内容就OK了,改用443端口
+
+![Alt text](http://dl27.yunpan.360.cn/intf.php?method=Preview.outputPic&qid=162093577&fname=%2F%E5%9B%BE%E5%BA%8A%E4%B8%93%E7%94%A8%2F0721-1.png&fhash=47e9fdfcafd97ba04b3f5f5661f842f11d391116&dt=27.793ad5ab6c3a7f8ce8b47d737e9a8d62&v=1.0.1&rtick=14374765816247&open_app_id=0&devtype=web&sign=1674a0f06c976d0a22621c9ed795b41c&)
+
+做完了以上事情说明我们可以和github连上了。
+剩下的就是把你的东西commit到对应仓库
+以后push和pull就行了。
+实现方式很多种，这里不再赘述了。
+
+
+我是用Xcode实现的。
+其实也可以考虑用commend tool  直接使用git命令来做，或者使用GitHub客户端。
+
+实际上不管哪种方式，都用的是git的机制。
+理解了这个就好办很多，用起来跟svn差不多。
+
+##`关于2  GitHub怎么搭建技术博客`
+
+参考：[用静态页面生成静态博客](http://isnowfy.github.io/about-simple-cn.html)
+
+用这个生成之后，因为是在原博主的仓库下需要转出来。先fork simple项目，注意里面有master和gh-pages两种branch分支；把master中的src下载到本地，
+然后把src文件夹push到gh-pages分支。（建议用GitHub客户端来做 方便简单）
+
+之后你可以使用urname.github.io/simple
+来继续管理自己的blog
+
+~~~~
+学会这样做事
+
+1】搜索问题 使用Google、
+Stack Overflow、Apple API
+
+2】部分代码上传GitHub
+
+3】多看别人的代码，多用英语
+~~~~
+
+
+
+
+<!-- markdown end -->
+</div>
+<div class="entry" id="main">
+<!-- content -->
+<h1 id="githubgithubpages">关于GitHub和GitHub Pages</h1>
+
+<p><br></p>
+
+<p>这篇主要解决两个问题:</p>
+
+<ul>
+<li>GitHub怎么上传代码</li>
+<li>GitHub怎么搭建技术博客</li>
+</ul>
+
+<h2 id="1github"><code>关于1  GitHub怎么上传代码</code></h2>
+
+<p>前期你要做以下几件事。</p>
+
+<p>1.注册GitHub帐号</p>
+
+<p>2.新建一个仓库<br>
+new一个repository</p>
+
+<p>3.设置你的SSH Key</p>
+
+<p>首先怎么拿到你的Key，在command中输入</p>
+
+<pre><code>ssh-keygen -t rsa -C "your_email@youremail.com"
+</code></pre>
+
+<p>邮件名称不需要引号，举例：
+<img src="http://dl27.yunpan.360.cn/intf.php?method=Preview.outputPic&amp;qid=162093577&amp;fname=%2F%E5%9B%BE%E5%BA%8A%E4%B8%93%E7%94%A8%2FC0A2C04E-1510-4E64-9BD0-EB5A730B75AB.png&amp;fhash=075250289e269a1f75ce652f809345444afc2746&amp;dt=27.42232b27d8a1d91fc6165a7ccfdcd297&amp;v=1.0.1&amp;rtick=14375467234542&amp;open_app_id=0&amp;devtype=web&amp;sign=006305665f7e3cd09b08aea6d731b9f1&amp;" alt="" title=""></p>
+
+<p>然后打开Key这个文件，
+这个时候之前学的一些linux下的命令就用到了
+<img src="http://dl27.yunpan.360.cn/intf.php?method=Preview.outputPic&amp;qid=162093577&amp;fname=%2F%E5%9B%BE%E5%BA%8A%E4%B8%93%E7%94%A8%2FA6400586-5784-41F6-A707-D8496B8B59E9.jpeg&amp;fhash=e525772d704a3a551bc9dc8bec82181187309044&amp;dt=27.8a3a57abcb143892738bb9eb4d97c4fa&amp;v=1.0.1&amp;rtick=14375460368577&amp;open_app_id=0&amp;devtype=web&amp;sign=2b9de7271e6e73d522a4ccf9f1cc9aeb&amp;" alt="" title=""></p>
+
+<p>或者直接用以下命令复制到剪贴板</p>
+
+<pre><code>pbcopy &lt; ~/.ssh/id_rsa.pub
+</code></pre>
+
+<p>最后在GitHub上设置一下</p>
+
+<p><img src="http://dl27.yunpan.360.cn/intf.php?method=Preview.outputPic&amp;qid=162093577&amp;fname=%2F%E5%9B%BE%E5%BA%8A%E4%B8%93%E7%94%A8%2F%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7+2015-07-20+%E4%B8%8B%E5%8D%883.09.53.png&amp;fhash=d60b1a29e94154dc27094788a017b9982deb13a9&amp;dt=27.814351d25ee284df0334cf5006d996bd&amp;v=1.0.1&amp;rtick=14375460361942&amp;open_app_id=0&amp;devtype=web&amp;sign=c82e55dffa10ff40e3225319cb375985&amp;" alt="" title=""></p>
+
+<p>4.连接GitHub与你的仓库</p>
+
+<p>用以下命令尝试连接一下</p>
+
+<pre><code>ssh -T git@github.com
+</code></pre>
+
+<p>输入yes继续即可。</p>
+
+<p><img src="http://dl27.yunpan.360.cn/intf.php?method=Preview.outputPic&amp;qid=162093577&amp;fname=%2F%E5%9B%BE%E5%BA%8A%E4%B8%93%E7%94%A8%2F%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7+2015-07-20+%E4%B8%8B%E5%8D%883.30.22.png&amp;fhash=922e9b380e4e71b4dbffb47e1eeede0dd3096bb3&amp;dt=27.087b5aa4f3f9a3435e04c3bd14b6d76f&amp;v=1.0.1&amp;rtick=14375460363050&amp;open_app_id=0&amp;devtype=web&amp;sign=4d5407420b2d6ff4bfb74ce67fd6978d&amp;" alt="" title=""></p>
+
+<p>连接的时候我遇到了这样的问题 报错如下</p>
+
+<pre><code>ssh: connect to host github.com port 22: Operation timed out
+</code></pre>
+
+<p>github可能把22端口给封了。</p>
+
+<p>我在<a href="http://stackoverflow.com/questions/7144811/git-ssh-error-connect-to-host-bad-file-number">stackflow</a>上找到了答案：</p>
+
+<p><img src="http://dl27.yunpan.360.cn/intf.php?method=Preview.outputPic&amp;qid=162093577&amp;fname=%2F%E5%9B%BE%E5%BA%8A%E4%B8%93%E7%94%A8%2F84572E17-1509-4140-A677-1A7AA4EBA7FA.png&amp;fhash=19ce7f00ff828d97a48dd0384e99034abda499b5&amp;dt=27.299def462bfb12d0655542e24928788c&amp;v=1.0.1&amp;rtick=14374767578355&amp;open_app_id=0&amp;devtype=web&amp;sign=4c573033849a1e50cc5e76729a784a47&amp;" alt="Alt text" title=""></p>
+
+<p>把.ssh/config改成以下内容就OK了,改用443端口</p>
+
+<p><img src="http://dl27.yunpan.360.cn/intf.php?method=Preview.outputPic&amp;qid=162093577&amp;fname=%2F%E5%9B%BE%E5%BA%8A%E4%B8%93%E7%94%A8%2F0721-1.png&amp;fhash=47e9fdfcafd97ba04b3f5f5661f842f11d391116&amp;dt=27.793ad5ab6c3a7f8ce8b47d737e9a8d62&amp;v=1.0.1&amp;rtick=14374765816247&amp;open_app_id=0&amp;devtype=web&amp;sign=1674a0f06c976d0a22621c9ed795b41c&amp;" alt="Alt text" title=""></p>
+
+<p>做完了以上事情说明我们可以和github连上了。
+剩下的就是把你的东西commit到对应仓库
+以后push和pull就行了。
+实现方式很多种，这里不再赘述了。</p>
+
+<p>我是用Xcode实现的。
+其实也可以考虑用commend tool  直接使用git命令来做，或者使用GitHub客户端。</p>
+
+<p>实际上不管哪种方式，都用的是git的机制。
+理解了这个就好办很多，用起来跟svn差不多。</p>
+
+<h2 id="2github"><code>关于2  GitHub怎么搭建技术博客</code></h2>
+
+<p>参考：<a href="http://isnowfy.github.io/about-simple-cn.html">用静态页面生成静态博客</a></p>
+
+<p>用这个生成之后，因为是在原博主的仓库下需要转出来。先fork simple项目，注意里面有master和gh-pages两种branch分支；把master中的src下载到本地，
+然后把src文件夹push到gh-pages分支。（建议用GitHub客户端来做 方便简单）</p>
+
+<p>之后你可以使用urname.github.io/simple
+来继续管理自己的blog</p>
+
+<pre><code>学会这样做事
+
+1】搜索问题 使用Google、
+Stack Overflow、Apple API
+
+2】部分代码上传GitHub
+
+3】多看别人的代码，多用英语
+</code></pre>
+<!-- content end -->
+</div>
+<br>
+<br>
+    <div id="disqus_thread"></div>
+	<div class="footer">
+		<p>© Copyright 2014 by isnowfy, Designed by isnowfy</p>
+	</div>
+</div>
+<script src="main.js"></script>
+<script id="content" type="text/mustache">
+    <h1>{{title}}</h1>
+    <div class="tag">
+    {{date}}
+    {{#tags}}
+    <a href="/#/tag/{{name}}">#{{name}}</a>
+    {{/tags}}
+    </div>
+</script>
+<script id="pagesTemplate" type="text/mustache">
+    {{#pages}}
+    <li>
+        <a href="{{path}}">{{title}}</a>
+    </li>
+    {{/pages}}
+</script>
+<script>
+$(document).ready(function() {
+    $.ajax({
+        url: "main.json",
+        type: "GET",
+        dataType: "json",
+        success: function(data) {
+            $("#title").html(data.name);
+            var pagesTemplate = Hogan.compile($("#pagesTemplate").html());
+            var pagesHtml = pagesTemplate.render({"pages": data.pages});
+            $("#pages").append(pagesHtml);
+            //path
+            var path = "aboutgithub.html";
+            //path end
+            var now = 0;
+            for (var i = 0; i < data.posts.length; ++i)
+                if (path == data.posts[i].path)
+                    now = i;
+            var post = data.posts[now];
+            var tmp = post.tags.split(" ");
+            var tags = [];
+            for (var i = 0; i < tmp.length; ++i)
+                if (tmp[i].length > 0)
+                    tags.push({"name": tmp[i]});
+            var contentTemplate = Hogan.compile($("#content").html());
+            var contentHtml = contentTemplate.render({"title": post.title, "tags": tags, "date": post.date});
+            $("#main").prepend(contentHtml);
+            if (data.disqus_shortname.length > 0) {
+                var disqus_shortname = data.disqus_shortname;
+                (function() {
+                    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                })();
+            }
+        }
+    });
+});
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ["\\(", "\\)"]], processEscapes: true}});
+</script>
+</body>
+</html>
